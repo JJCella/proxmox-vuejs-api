@@ -3,10 +3,10 @@ from proxmoxer import ProxmoxAPI, ResourceException
 import time
 from random import randint
 
-node = 'poggersnode1'
+node = 'atlas'
 
-proxmox = ProxmoxAPI('192.168.1.100', user='root@pam',
-                     password='EeZ{e0da', verify_ssl=False)
+proxmox = ProxmoxAPI('192.168.1.2', user='fastapi@pam',
+                     password='fastapi', verify_ssl=False)
 
 x = proxmox.nodes(node).qemu(101).status.current.get()
 
@@ -21,22 +21,22 @@ class VirtualMachine(BaseModel):
 
 #print(VirtualMachine(**x))
 
-x = proxmox.nodes('poggersnode1').qemu(101).rrddata.get(timeframe='hour', cf='AVERAGE')
+x = proxmox.nodes(node).qemu(101).rrddata.get(timeframe='hour', cf='AVERAGE')
 
 #print(x)
 
 new_vm = {
- "vmid": "100",
+ "vmid": "144",
  "name":"aa",
- "ide2":"local:iso/debian-10.1.0-amd64-netinst.iso,media=cdrom",
+ #"ide2":"local:iso/debian-10.1.0-amd64-netinst.iso,media=cdrom",
  "ostype":"l26",
- "scsihw":"virtio-scsi-pci",
- "scsi0":"local-lvm:10",
+ #"scsihw":"virtio-scsi-pci",
+    #"scsi0": "local-lvm:1",
  "sockets":"1",
  "cores":"1",
- "numa":"0",
+ #"numa":"0",
  "memory":"512",
- "net0":"virtio,bridge=vmbr0,firewall=1"
+# "net0":"virtio,bridge=vmbr0,firewall=1"
           }
 
 try:
@@ -61,4 +61,4 @@ vm_infos = proxmox.nodes(node).qemu(new_vm['vmid']).status.stop.post()
 
 print(vm_infos)
 
-#print(proxmox.nodes(node).qemu(new_vm['vmid']).delete())
+print(proxmox.nodes(node).qemu(new_vm['vmid']).delete())

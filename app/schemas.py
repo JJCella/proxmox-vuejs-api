@@ -18,24 +18,39 @@ class UserCreate(UserBase):
         return password
 
 
-class VirtualMachineBase(BaseModel):
-    image: str
+class VirtualMachineCreate(BaseModel):
+    name: str
 
+class VirtualMachineBaseCreation(BaseModel):
+    vmid: int
 
-class VirtualMachineCreate(VirtualMachineBase):
-    pass
-
-
-class VirtualMachine(VirtualMachineBase):
+class VirtualMachine(BaseModel):
     id: int
-    vm_id: int
+    vmid: int
     user_id: int
     creation_date: datetime
-    data: dict = Field(None)
 
     class Config:
         orm_mode = True
 
+class Stats(BaseModel):
+    instances: int
+    up_instances: int
+    down_instances: int
+    monthly_costs: int
+
+class VirtualMachineInfos(BaseModel):
+    id: int
+    creation_date: datetime
+    name: str
+    status: str
+    uptime: int
+    netin: int
+    netout: int
+    maxmem: int
+    maxdisk: int
+    mem: int
+    cpu: int
 
 class User(UserBase):
     id: int

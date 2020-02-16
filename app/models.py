@@ -9,9 +9,9 @@ class VirtualMachine(Base):
     __tablename__ = "vms"
 
     id = Column(Integer, primary_key=True, index=True)
-    vm_id = Column(Integer)
+    vmid = Column(Integer)
     user_id = Column(Integer, ForeignKey('users.id'))
-    image = Column(String)
+    #image = Column(String)
     creation_date = Column(DateTime, default=datetime.datetime.utcnow)
 
 
